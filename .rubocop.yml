@@ -1,8 +1,88 @@
 # Omakase Ruby styling for Rails
 inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
-# Overwrite or add rules to create your own house style
-#
-# # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
-# Layout/SpaceInsideArrayLiteralBrackets:
-#   Enabled: false
+plugins:
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - bin/**/*
+    - db/**/*
+    - vendor/**/*
+    - tmp/**/*
+    - node_modules/**/*
+
+# Style -----------------------------------------------------------------------
+Layout/SpaceInsideArrayLiteralBrackets:
+  Enabled: true
+  EnforcedStyle: no_space
+  EnforcedStyleForEmptyBrackets: no_space
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: single_quotes
+  Include:
+    - app/**/*
+    - config/**/*
+    - lib/**/*
+    - spec/**/*
+    - Gemfile
+
+Lint/RedundantCopDisableDirective:
+  Enabled: true
+
+Lint/RedundantCopEnableDirective:
+  Enabled: true
+
+# RSpec -----------------------------------------------------------------------
+RSpec/AnyInstance:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/ExpectInHook:
+  Enabled: false
+
+RSpec/StubbedMock:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Max: 22
+
+RSpec/MessageSpies:
+  EnforcedStyle: receive
+
+RSpec/MessageChain:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 5
+
+RSpec/EmptyExampleGroup:
+  Exclude:
+    - spec/requests/**/*
+
+RSpec/VariableName:
+  Exclude:
+    - spec/requests/**/*
+    - spec/support/shared_examples/requests/**/*
+
+RSpec/IncludeExamples:
+  Enabled: false
+
+RSpec/ReceiveMessages:
+  Enabled: false
+
+RSpec/ScatteredSetup:
+  Enabled: false
+
+RSpec/MetadataStyle:
+  Enabled: false
+
+RSpec/ExampleWording:
+  Enabled: false
