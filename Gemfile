@@ -23,6 +23,15 @@ gem 'solid_cable'
 gem "devise"
 gem "devise-jwt"
 
+# Pundit
+gem 'pundit', '~> 2.5'
+
+# Dry Validation
+gem 'dry-validation'
+
+# Panko Serializer
+gem 'panko_serializer'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 
