@@ -7,12 +7,13 @@ module Api
         user = User.find_by(email: sign_in_params[:email])
 
         unless user&.valid_password?(sign_in_params[:password])
-          render json: { error: "Invalid email or password" }, status: :unauthorized
+          render json: { error: 'Invalid email or password' }, status: :unauthorized
           return
         end
 
         token, = Warden::JWTAuth::UserEncoder.new.call(user, :user, nil)
-        render json: { user: user_payload(user), token: token }, status: :ok
+        response.set_header('Authorization', "Bearer #{token}")
+        render json: { user: user_payload(user) }, status: :ok
       end
 
       def destroy

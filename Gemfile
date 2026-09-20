@@ -22,6 +22,8 @@ gem 'solid_cable'
 
 gem "devise"
 gem "devise-jwt"
+# Rails 8.1 passes JSON parser options positionally; json 3 expects keywords.
+gem 'json', '< 3.0'
 
 # Pundit
 gem 'pundit', '~> 2.5'
