@@ -1,6 +1,6 @@
 module Api
   module Auth
-    class RegistrationController < Api::BaseController
+    class RegistrationsController < Api::BaseController
       skip_before_action :authenticate_user!
 
       def create

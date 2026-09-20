@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-class RegistrationForm < BaseForm
+module Auth
+  class RegistrationForm < BaseForm
+    def initialize(params)
+      super(params)
+      @contract = Auth::RegistrationCreateContract.new
+    end
 
-  def initialize(params)
-    super(params)
-    @contract = Auth::RegistrationCreateContract.new
+    private
+
+    def persist!
+      @model = User.create!(@validated_params)
+    end
   end
-
-  private
-
-  def persist!
-    @model = User.create!(@validated_params)
-  end
-
 end

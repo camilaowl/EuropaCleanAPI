@@ -1,19 +1,17 @@
 module Api
   module Auth
-    class SessionController < Api::BaseController
+    class SessionsController < Api::BaseController
       skip_before_action :authenticate_user!, only: :create
 
       def create
-        user = User.find_by(email: sign_in_params[:email])
+        user = User.find_for_database_authentication(email: sign_in_params[:email])
 
         unless user&.valid_password?(sign_in_params[:password])
           render json: { error: 'Invalid email or password' }, status: :unauthorized
           return
         end
 
-        token, = Warden::JWTAuth::UserEncoder.new.call(user, :user, nil)
-        response.set_header('Authorization', "Bearer #{token}")
-        render json: { user: user_payload(user) }, status: :ok
+        render_authenticated_user(user)
       end
 
       def destroy

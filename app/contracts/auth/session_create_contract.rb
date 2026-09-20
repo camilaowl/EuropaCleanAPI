@@ -9,7 +9,7 @@ class Auth::SessionCreateContract < ApplicationContract
   rule(:email, :password) do
     user = User.find_by(email: values[:email])
 
-    unless user&.authenticate(values[:password])
+    unless user&.valid_password?(values[:password])
       key(:password).failure('wrong email or password')
     end
   end

@@ -5,8 +5,11 @@ class User < ApplicationRecord
   devise :database_authenticatable,
          :registerable,
          :recoverable,
-         :rememberable, 
+         :rememberable,
          :validatable,
          :jwt_authenticatable,
          jwt_revocation_strategy: self
+
+  validates :provider, presence: true, if: :uid?
+  validates :uid, presence: true, uniqueness: { scope: :provider }, if: :provider?
 end

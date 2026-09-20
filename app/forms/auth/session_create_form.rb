@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-class SessionCreateForm < BaseForm
+module Auth
+  class SessionCreateForm < BaseForm
+    def initialize(params)
+      super(params)
+      @contract = Auth::SessionCreateContract.new
+    end
 
-  def initialize(params)
-    super(params)
-    @contract = Auth::SessionCreateContract.new
+    private
+
+    def persist!
+      @model = User.find_by(email: @validated_params[:email])
+    end
   end
-
-  private
-
-  def persist!
-    @model = User.find_by(email: @validated_params[:email])
-  end
-
 end
