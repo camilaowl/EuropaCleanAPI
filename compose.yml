@@ -5,7 +5,7 @@ services:
       - .:/rails
     depends_on: [db]
     ports:
-      - "3000:3000"
+      - "3000:80"
     environment:
       RAILS_ENV: development
       DATABASE_URL: postgres://postgres:postgres@db:5432/europa_clean
