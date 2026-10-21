@@ -20,6 +20,22 @@ gem 'solid_cache'
 gem 'solid_queue'
 gem 'solid_cable'
 
+gem 'devise'
+gem 'devise-jwt'
+# Verify Google Identity ID tokens submitted by API clients.
+gem 'googleauth', '~> 1.17'
+# Rails 8.1 passes JSON parser options positionally; json 3 expects keywords.
+gem 'json', '< 3.0'
+
+# Pundit
+gem 'pundit', '~> 2.5'
+
+# Dry Validation
+gem 'dry-validation'
+
+# Panko Serializer
+gem 'panko_serializer'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 

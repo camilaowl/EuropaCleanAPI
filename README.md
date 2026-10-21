@@ -1,24 +1,36 @@
-# README
+# Europa Clean API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Authentication
 
-Things you may want to cover:
+All successful sign-ins return an application JWT in the `Authorization`
+response header as `Bearer <token>`.
 
-* Ruby version
+Email and password:
 
-* System dependencies
+```http
+POST /api/auth/sign_in
+Content-Type: application/json
 
-* Configuration
+{"user":{"email":"person@example.com","password":"password123"}}
+```
 
-* Database creation
+Google Identity:
 
-* Database initialization
+```http
+POST /api/auth/google
+Content-Type: application/json
 
-* How to run the test suite
+{"google":{"id_token":"<Google Identity ID token>"}}
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+Set `GOOGLE_CLIENT_IDS` to the comma-separated Google OAuth client IDs allowed
+to authenticate (for example, web and mobile client IDs). The API verifies the
+token's signature, issuer, expiry, audience, and verified email before issuing
+its own JWT.
 
-* Deployment instructions
+Sign out and revoke the current application JWT:
 
-* ...
+```http
+DELETE /api/auth/sign_out
+Authorization: Bearer <token>
+```
