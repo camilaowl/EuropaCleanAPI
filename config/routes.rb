@@ -19,5 +19,11 @@ Rails.application.routes.draw do
       post 'google', to: 'google_sessions#create'
       delete 'sign_out', to: 'sessions#destroy'
     end
+
+    get 'spaces', to: 'spaces#index'
+    post 'spaces', to: 'spaces#create'
+    get 'spaces/:id', to: 'spaces#show'
+    patch 'spaces/:id', to: 'spaces#update'
+    delete 'spaces/:id', to: 'spaces#destroy'
   end
 end

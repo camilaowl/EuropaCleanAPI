@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_many :spaces, dependent: :destroy
   include Devise::JWT::RevocationStrategies::JTIMatcher
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
