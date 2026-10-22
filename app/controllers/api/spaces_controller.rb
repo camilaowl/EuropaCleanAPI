@@ -66,6 +66,6 @@ class Api::SpacesController < Api::BaseController
   end
 
   def space_params
-    params.require(:space).permit(:name)
+    required_object_param(:space).permit(:name)
   end
 end

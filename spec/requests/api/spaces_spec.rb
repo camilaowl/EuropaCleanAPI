@@ -106,6 +106,16 @@ RSpec.describe 'API spaces', type: :request do
       expect(response).to have_http_status(:bad_request)
       expect(response.parsed_body.fetch('error')).to match(/param is missing.*space/)
     end
+
+    it 'returns bad request when space is not an object' do
+      expect do
+        post '/api/spaces', params: { space: 'Family Home' }, headers: headers, as: :json
+      end.not_to change(Space, :count)
+
+      expect(response).to have_http_status(:bad_request)
+      expect(response.parsed_body.fetch('error'))
+        .to eq('param is missing or the value is empty or invalid: space')
+    end
   end
 
   describe 'PATCH /api/spaces/:id' do

@@ -12,6 +12,13 @@ module Api
 
     private
 
+    def required_object_param(key)
+      payload = params.require(key)
+      raise ActionController::ParameterMissing, key unless payload.is_a?(ActionController::Parameters)
+
+      payload
+    end
+
     def user_payload(user)
       {
         id: user.id,

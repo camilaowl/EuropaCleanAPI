@@ -132,8 +132,10 @@ RSpec.describe 'API rooms', type: :request do
       )
 
       expect do
-        post '/api/rooms', params: { room: submitted_params }, headers: headers, as: :json
-      end.to change(Room, :count).by(1).and change(RoomItem, :count).by(0)
+        expect do
+          post '/api/rooms', params: { room: submitted_params }, headers: headers, as: :json
+        end.to change(Room, :count).by(1)
+      end.not_to change(RoomItem, :count)
 
       expect(response).to have_http_status(:created)
       expect(response.parsed_body.dig('room', 'id')).not_to eq(existing_room.id)
@@ -212,6 +214,17 @@ RSpec.describe 'API rooms', type: :request do
 
       expect(response).to have_http_status(:bad_request)
       expect(response.parsed_body.fetch('error')).to match(/param is missing.*room/)
+    end
+
+    ['Kitchen', ['Kitchen'], [{ name: 'Kitchen' }], 42, true, false, nil].each do |payload|
+      it "returns bad request when room is #{payload.inspect}" do
+        expect do
+          post '/api/rooms', params: { room: payload }, headers: headers, as: :json
+        end.not_to change(Room, :count)
+
+        expect(response).to have_http_status(:bad_request)
+        expect(response.parsed_body.fetch('error')).to match(/param is missing.*room/)
+      end
     end
 
     it 'requires authentication' do

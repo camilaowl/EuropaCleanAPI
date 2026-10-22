@@ -64,10 +64,10 @@ class Api::RoomsController < Api::BaseController
   end
 
   def room_create_params
-    params.require(:room).permit(:space_id, :name, :room_type)
+    required_object_param(:room).permit(:space_id, :name, :room_type)
   end
 
   def room_update_params
-    params.require(:room).permit(:name, :room_type)
+    required_object_param(:room).permit(:name, :room_type)
   end
 end
