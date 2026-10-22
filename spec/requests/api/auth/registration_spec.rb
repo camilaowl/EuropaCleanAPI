@@ -32,6 +32,25 @@ RSpec.describe 'POST /api/auth/sign_up', type: :request do
     end
   end
 
+  context 'when privileged user attributes are submitted' do
+    before do
+      params.fetch(:user).merge!(
+        provider: 'google',
+        uid: 'attacker-subject',
+        jti: 'attacker-jti'
+      )
+    end
+
+    it 'ignores the Google identity and token revocation fields' do
+      sign_up_request
+
+      user = User.find_by!(email: email)
+      expect(response).to have_http_status(:created)
+      expect(user).to have_attributes(provider: nil, uid: nil)
+      expect(user.jti).not_to eq('attacker-jti')
+    end
+  end
+
   context 'when password confirmation does not match' do
     let(:password_confirmation) { 'different-password' }
 

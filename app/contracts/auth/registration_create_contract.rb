@@ -2,7 +2,6 @@
 
 class Auth::RegistrationCreateContract < ApplicationContract
   params do
-    required(:name).filled(:string)
     required(:email).filled(:string)
     required(:password).filled(:string)
     required(:password_confirmation).filled(:string)

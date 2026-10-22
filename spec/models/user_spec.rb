@@ -86,6 +86,48 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'Google identity validations' do
+    it 'requires a provider when a UID is present' do
+      user = build(:user, provider: nil, uid: 'google-subject')
+
+      expect(user).not_to be_valid
+      expect(user.errors.of_kind?(:provider, :blank)).to be(true)
+    end
+
+    it 'requires a UID when a provider is present' do
+      user = build(:user, provider: 'google', uid: nil)
+
+      expect(user).not_to be_valid
+      expect(user.errors.of_kind?(:uid, :blank)).to be(true)
+    end
+
+    it 'requires the provider and UID pair to be unique' do
+      create(:user, provider: 'google', uid: 'google-subject')
+      duplicate = build(:user, provider: 'google', uid: 'google-subject')
+
+      expect(duplicate).not_to be_valid
+      expect(duplicate.errors.of_kind?(:uid, :taken)).to be(true)
+    end
+
+    it 'allows the same UID for a different provider' do
+      create(:user, provider: 'google', uid: 'shared-subject')
+
+      expect(build(:user, provider: 'apple', uid: 'shared-subject')).to be_valid
+    end
+  end
+
+  describe 'destroying a user' do
+    it 'destroys the spaces owned by the user' do
+      user = create(:user)
+      space = create(:space, user: user)
+
+      user.destroy!
+
+      expect(described_class.exists?(user.id)).to be(false)
+      expect(Space.exists?(space.id)).to be(false)
+    end
+  end
+
   describe 'JWT revocation' do
     let(:user) { create(:user) }
     let(:payload) { user.jwt_payload }
