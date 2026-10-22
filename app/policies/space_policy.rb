@@ -1,4 +1,4 @@
-#frozen_string_literal: true
+# frozen_string_literal: true
 
 class SpacePolicy < ApplicationPolicy
     def index? = user.present?
@@ -17,6 +17,6 @@ class SpacePolicy < ApplicationPolicy
   private
 
   def owner?
-    @user.present? && @record.user_id == @user.id
+    user.present? && record.user_id == user.id
   end
-def
+end

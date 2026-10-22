@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :room do
-    name { "MyString" }
-    room_type { "MyString" }
-    space { nil }
+    name { 'Bedroom' }
+    room_type { :bedroom }
+    association :space
   end
 end

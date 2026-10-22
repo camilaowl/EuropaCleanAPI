@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class SpacesUpdateContract < ApplicationContract
+class Spaces::SpacesUpdateContract < ApplicationContract
   params do
     required(:id).filled(:string)
-    optional(:name).filled(:string)
+    required(:name).filled(:string)
   end
 
   rule(:name) do

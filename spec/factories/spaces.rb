@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :space do
-    name { "MyString" }
-    space_type { "MyString" }
-    user { nil }
+    name { 'My Space' }
+    space_type { :home }
+    association :user
   end
 end

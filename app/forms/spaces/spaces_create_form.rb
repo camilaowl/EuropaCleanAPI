@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
-class SpacesCreateForm < BaseForm
-
+class Spaces::SpacesCreateForm < BaseForm
   attr_reader :user
 
   def initialize(user, params)
     super(params)
     @user = user
-    @contract = SpacesCreateContract.new
+    @contract = Spaces::SpacesCreateContract.new
   end
 
   private

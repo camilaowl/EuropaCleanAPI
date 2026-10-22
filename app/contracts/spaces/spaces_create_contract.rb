@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SpacesCreateContract < ApplicationContract
+class Spaces::SpacesCreateContract < ApplicationContract
   params do
     required(:name).filled(:string)
   end

@@ -15,7 +15,6 @@ class Api::SpacesController < Api::BaseController
   end
 
   def show
-    @space = current_user.spaces.find(params[:id])
     render json: Serializer.new(
         @space,
         serializer: SpacesSerializer
@@ -25,7 +24,7 @@ class Api::SpacesController < Api::BaseController
   def create
     authorize Space
 
-    form = SpacesCreateForm.new(current_user, space_params)
+    form = Spaces::SpacesCreateForm.new(current_user, space_params)
     if form.save
       render json: Serializer.new(
           form.model,
@@ -37,7 +36,7 @@ class Api::SpacesController < Api::BaseController
   end
 
   def update
-    form = SpacesUpdateForm.new(current_user, space_params)
+    form = Spaces::SpacesUpdateForm.new(current_user, space_params.merge(id: params[:id]))
     if form.save
       render json: Serializer.new(
           form.model,
@@ -49,7 +48,7 @@ class Api::SpacesController < Api::BaseController
   end
 
   def destroy
-    form = SpacesDeleteForm.new(current_user, params)
+    form = Spaces::SpacesDeleteForm.new(current_user, { id: params[:id] })
     if form.save
       head :no_content
     else
