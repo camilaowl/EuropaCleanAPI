@@ -1,5 +1,9 @@
 module Api
   class BaseController < ApplicationController
+    include Pundit::Authorization
+
+    rescue_from Pundit::NotAuthorizedError, with: :render_forbidden
+
     before_action :authenticate_user!
 
     rescue_from ActionController::ParameterMissing do |exception|
@@ -19,6 +23,10 @@ module Api
       token, = Warden::JWTAuth::UserEncoder.new.call(user, :user, nil)
       response.set_header('Authorization', "Bearer #{token}")
       render json: { user: user_payload(user) }, status: :ok
+    end
+
+    def render_forbidden
+      render json: { error: 'forbidden' }, status: :forbidden
     end
 
     def render_errors(record)

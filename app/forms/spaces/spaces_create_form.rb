@@ -4,7 +4,7 @@ class SpacesCreateForm < BaseForm
 
   attr_reader :user
 
-  def initialize(params, user)
+  def initialize(user, params)
     super(params)
     @user = user
     @contract = SpacesCreateContract.new
