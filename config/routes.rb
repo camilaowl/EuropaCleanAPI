@@ -31,5 +31,11 @@ Rails.application.routes.draw do
     get 'spaces/:space_id/rooms/:id', to: 'rooms#show'
     patch 'spaces/:space_id/rooms/:id', to: 'rooms#update'
     delete 'spaces/:space_id/rooms/:id', to: 'rooms#destroy'
+
+    get 'spaces/:space_id/rooms/:room_id/room_items', to: 'room_items#index'
+    post 'spaces/:space_id/rooms/:room_id/room_items', to: 'room_items#create'
+    get 'spaces/:space_id/rooms/:room_id/room_items/:id', to: 'room_items#show'
+    patch 'spaces/:space_id/rooms/:room_id/room_items/:id', to: 'room_items#update'
+    delete 'spaces/:space_id/rooms/:room_id/room_items/:id', to: 'room_items#destroy'
   end
 end
