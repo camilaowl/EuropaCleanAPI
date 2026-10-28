@@ -10,7 +10,8 @@ RSpec.describe 'API spaces', type: :request do
   describe 'GET /api/spaces' do
     it 'returns only spaces owned by the authenticated user' do
       owned_space = create(:space, user: user, name: 'Family Home')
-      room = create(:room, space: owned_space, name: 'Kitchen', room_type: :kitchen)
+      room_type = create(:room_type, room_type_key: 'kitchen')
+      room = create(:room, space: owned_space, name: 'Kitchen', room_type: room_type)
       room_item = create(:room_item, room: room, name: 'Table')
       create(:space, name: 'Someone Else')
 

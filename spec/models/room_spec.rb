@@ -3,29 +3,26 @@
 require 'rails_helper'
 
 RSpec.describe Room, type: :model do
-  describe '.room_types' do
-    it 'exposes the supported room types' do
-      expect(described_class.room_types).to eq(
-        'bedroom' => 'bedroom',
-        'bathroom' => 'bathroom',
-        'kitchen' => 'kitchen',
-        'living_room' => 'living_room',
-        'dining_room' => 'dining_room',
-        'office' => 'office',
-        'garage' => 'garage',
-        'basement' => 'basement',
-        'attic' => 'attic',
-        'other' => 'other'
-      )
-    end
-  end
-
   describe 'space membership' do
     it 'is invalid without a space' do
       room = build(:room, space: nil)
 
       expect(room).not_to be_valid
       expect(room.errors.of_kind?(:space, :blank)).to be(true)
+    end
+  end
+
+  describe 'room type membership' do
+    it 'can reference a room type' do
+      room_type = create(:room_type)
+      room = create(:room, room_type: room_type)
+
+      expect(room.reload.room_type).to eq(room_type)
+      expect(room_type.rooms).to contain_exactly(room)
+    end
+
+    it 'is valid without a room type' do
+      expect(build(:room, room_type: nil)).to be_valid
     end
   end
 

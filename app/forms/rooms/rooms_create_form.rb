@@ -13,6 +13,9 @@ class Rooms::RoomsCreateForm < BaseForm
 
   def persist!
     space = user.spaces.find(@validated_params.fetch(:space_id))
-    @model = space.rooms.create!(@validated_params.except(:space_id))
+    room_type = RoomType.find_by!(room_type_key: @validated_params.fetch(:room_type))
+    attributes = @validated_params.except(:space_id, :room_type).merge(room_type: room_type)
+
+    @model = space.rooms.create!(attributes)
   end
 end

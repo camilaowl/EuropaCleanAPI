@@ -2,14 +2,13 @@
 
 class Api::RoomsController < Api::BaseController
   before_action :set_room, only: [:show, :update, :destroy]
+  before_action :set_space, only: :index
 
-  after_action :verify_authorized, except: :index
-  after_action :verify_policy_scoped, only: :index
+  after_action :verify_authorized
 
   def index
-    rooms = policy_scope(Room)
     render json: ArraySerializer.new(
-      rooms,
+      @space.rooms,
       each_serializer: RoomsSerializer
     ).to_json, status: :ok
   end
@@ -58,6 +57,11 @@ class Api::RoomsController < Api::BaseController
 
   private
 
+  def set_space
+    @space = Space.where(user_id: current_user.id).find(params[:space_id])
+    authorize @space
+  end
+
   def set_room
     @room = Room.where(space_id: current_user.spaces.select(:id)).find(params[:id])
     authorize @room
@@ -68,6 +72,6 @@ class Api::RoomsController < Api::BaseController
   end
 
   def room_update_params
-    required_object_param(:room).permit(:name, :room_type)
+    required_object_param(:room).permit(:space_id, :name, :room_type)
   end
 end

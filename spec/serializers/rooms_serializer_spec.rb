@@ -3,7 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe RoomsSerializer do
-  let(:room) { create(:room, name: 'Kitchen', room_type: :kitchen) }
+  let(:room_type) { create(:room_type, room_type_key: 'kitchen') }
+  let(:item_type) { create(:item_type, item_type_key: 'furniture') }
+  let(:room) { create(:room, name: 'Kitchen', room_type: room_type) }
 
   it 'serializes room fields' do
     result = Serializer.new(room, serializer: described_class).to_h.fetch('room')
@@ -18,7 +20,7 @@ RSpec.describe RoomsSerializer do
   end
 
   it 'serializes nested room items' do
-    item = create(:room_item, room: room, name: 'Table')
+    item = create(:room_item, room: room, name: 'Table', item_type: item_type)
 
     result = Serializer.new(room, serializer: described_class).to_h.fetch('room')
 

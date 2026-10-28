@@ -12,6 +12,6 @@ class Rooms::RoomsCreateContract < ApplicationContract
   end
 
   rule(:room_type) do
-    key.failure('is not included in the list') unless Room.room_types.key?(value)
+    key.failure('is not included in the list') unless RoomType.exists?(room_type_key: value)
   end
 end

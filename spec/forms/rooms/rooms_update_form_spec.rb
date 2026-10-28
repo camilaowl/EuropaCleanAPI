@@ -6,7 +6,10 @@ RSpec.describe Rooms::RoomsUpdateForm do
   subject(:form) { described_class.new(user, params) }
 
   let(:user) { create(:user) }
-  let(:room) { create(:room, space: create(:space, user: user), name: 'Kitchen', room_type: :kitchen) }
+  let(:room_type) { create(:room_type, room_type_key: 'kitchen') }
+  let(:room) do
+    create(:room, space: create(:space, user: user), name: 'Kitchen', room_type: room_type)
+  end
   let(:params) { { id: room.id.to_s, name: 'Main Kitchen' } }
 
   context 'with valid parameters' do
@@ -14,7 +17,7 @@ RSpec.describe Rooms::RoomsUpdateForm do
       expect(form.save).to be(true)
 
       expect(form.model).to eq(room)
-      expect(room.reload).to have_attributes(name: 'Main Kitchen', room_type: 'kitchen')
+      expect(room.reload).to have_attributes(name: 'Main Kitchen', room_type: room_type)
     end
   end
 
@@ -24,7 +27,7 @@ RSpec.describe Rooms::RoomsUpdateForm do
     it 'does not update the room' do
       expect(form.save).to be(false)
 
-      expect(room.reload.room_type).to eq('kitchen')
+      expect(room.reload.room_type).to eq(room_type)
       expect(form.errors.fetch(:room_type)).to include('is not included in the list')
     end
   end

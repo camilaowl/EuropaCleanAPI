@@ -12,7 +12,7 @@ class Rooms::RoomsUpdateContract < ApplicationContract
   end
 
   rule(:room_type) do
-    key.failure('is not included in the list') if key? && !Room.room_types.key?(value)
+    key.failure('is not included in the list') if key? && !RoomType.exists?(room_type_key: value)
   end
 
   rule do

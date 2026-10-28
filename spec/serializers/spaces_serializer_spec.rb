@@ -20,8 +20,10 @@ RSpec.describe SpacesSerializer do
   end
 
   it 'serializes nested rooms and items' do
-    room = create(:room, space: space, name: 'Kitchen', room_type: :kitchen)
-    item = create(:room_item, room: room, name: 'Table')
+    room_type = create(:room_type, room_type_key: 'kitchen')
+    item_type = create(:item_type, item_type_key: 'furniture')
+    room = create(:room, space: space, name: 'Kitchen', room_type: room_type)
+    item = create(:room_item, room: room, name: 'Table', item_type: item_type)
 
     result = Serializer.new(space, serializer: described_class).to_h.fetch('space')
 

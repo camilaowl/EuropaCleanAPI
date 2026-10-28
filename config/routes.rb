@@ -26,10 +26,10 @@ Rails.application.routes.draw do
     patch 'spaces/:id', to: 'spaces#update'
     delete 'spaces/:id', to: 'spaces#destroy'
 
-    get 'rooms', to: 'rooms#index'
-    post 'rooms', to: 'rooms#create'
-    get 'rooms/:id', to: 'rooms#show'
-    patch 'rooms/:id', to: 'rooms#update'
-    delete 'rooms/:id', to: 'rooms#destroy'
+    get 'spaces/:space_id/rooms', to: 'rooms#index'
+    post 'spaces/:space_id/rooms', to: 'rooms#create'
+    get 'spaces/:space_id/rooms/:id', to: 'rooms#show'
+    patch 'spaces/:space_id/rooms/:id', to: 'rooms#update'
+    delete 'spaces/:space_id/rooms/:id', to: 'rooms#destroy'
   end
 end

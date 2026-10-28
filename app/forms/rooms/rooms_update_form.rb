@@ -13,7 +13,11 @@ class Rooms::RoomsUpdateForm < BaseForm
 
   def persist!
     @model = user_rooms.find(@validated_params.fetch(:id))
-    @model.update!(@validated_params.except(:id))
+    attributes = @validated_params.except(:id)
+    room_type_key = attributes.delete(:room_type)
+    attributes[:room_type] = RoomType.find_by!(room_type_key: room_type_key) if room_type_key
+
+    @model.update!(attributes)
   end
 
   def user_rooms
