@@ -17,13 +17,15 @@ module Auth
           return link_identity(user, uid) if user
 
           password = Devise.friendly_token(32)
-          User.create!(
+          user = User.create!(
             email: email,
             provider: PROVIDER,
             uid: uid,
             password: password,
             password_confirmation: password
           )
+          Spaces::DefaultSetupService.new(user).call
+          user
         end
       end
 

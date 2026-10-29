@@ -17,13 +17,17 @@ RSpec.describe 'POST /api/auth/google', type: :request do
   end
 
   context 'when the Google identity is new' do
-    it 'creates the user and returns a JWT' do
-      expect { google_sign_in_request }.to change(User, :count).by(1)
+    it 'creates the user with a default space and returns a JWT' do
+      expect { google_sign_in_request }
+        .to change(User, :count).by(1)
+        .and change(Space, :count).by(1)
+        .and change(Room, :count).by(5)
 
       user = User.find_by!(provider: 'google', uid: google_uid)
 
       expect(response).to have_http_status(:ok)
       expect(response.headers.fetch('Authorization')).to match(/\ABearer \S+\z/)
+      expect(user.spaces.sole).to have_attributes(name: 'My Home', space_type: 'home')
       expect(response.parsed_body).to eq(
         'user' => { 'id' => user.id, 'email' => email }
       )

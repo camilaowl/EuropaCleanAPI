@@ -6,7 +6,7 @@ module Api
       def create
         user = User.new(sign_up_params)
 
-        if user.save
+        if register(user)
           render json: { user: user_payload(user) }, status: :created
         else
           render_errors(user)
@@ -17,6 +17,15 @@ module Api
 
       def sign_up_params
         params.require(:user).permit(:email, :password, :password_confirmation)
+      end
+
+      def register(user)
+        User.transaction do
+          next false unless user.save
+
+          Spaces::DefaultSetupService.new(user).call
+          true
+        end
       end
     end
   end

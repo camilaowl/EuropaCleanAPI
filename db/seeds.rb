@@ -9,6 +9,7 @@ room_types = [
   { key: "basement", name: "Basement", icon: "basement" },
   { key: "laundry_room", name: "Laundry Room", icon: "laundry_room" },
   { key: "attic", name: "Attic", icon: "attic" },
+  { key: "hallway", name: "Hallway", icon: "hallway" },
   { key: "other", name: "Other", icon: "other" }
 ]
 
