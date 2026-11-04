@@ -1,0 +1,4 @@
+interface:
+  display_name: "RSpec Testing"
+  short_description: "Test Rails behavior with RSpec effectively"
+  default_prompt: "Use $rspec-testing to add focused RSpec coverage for this Rails change."

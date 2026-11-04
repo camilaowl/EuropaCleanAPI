@@ -20,15 +20,42 @@ RSpec.describe 'POST /api/auth/sign_up', type: :request do
   end
 
   context 'when parameters are valid' do
-    it 'creates a user and returns its public data' do
-      expect { sign_up_request }.to change(User, :count).by(1)
+    it 'creates a user with a default space and rooms' do
+      expect { sign_up_request }
+        .to change(User, :count).by(1)
+        .and change(Space, :count).by(1)
+        .and change(Room, :count).by(5)
 
       user = User.find_by!(email: email)
+      space = user.spaces.sole
 
       expect(response).to have_http_status(:created)
       expect(response.parsed_body).to eq(
         'user' => { 'id' => user.id, 'email' => user.email }
       )
+      expect(space).to have_attributes(name: 'My Home', space_type: 'home')
+      expect(space.rooms.pluck(:name)).to contain_exactly(
+        'Kitchen', 'Bathroom', 'Toilet', 'Bedroom', 'Hallway'
+      )
+    end
+  end
+
+  context 'when privileged user attributes are submitted' do
+    before do
+      params.fetch(:user).merge!(
+        provider: 'google',
+        uid: 'attacker-subject',
+        jti: 'attacker-jti'
+      )
+    end
+
+    it 'ignores the Google identity and token revocation fields' do
+      sign_up_request
+
+      user = User.find_by!(email: email)
+      expect(response).to have_http_status(:created)
+      expect(user).to have_attributes(provider: nil, uid: nil)
+      expect(user.jti).not_to eq('attacker-jti')
     end
   end
 
